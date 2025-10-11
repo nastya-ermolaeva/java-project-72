@@ -1,0 +1,17 @@
+# Ignore Gradle-project specific cache directory #
+app/.gradle
+
+# Ignore Gradle build output #
+build
+
+**/logs/
+
+.settings
+bin
+.project*
+.classpath
+.idea/
+.factorypath
+
+# OS-specific files #
+.DS_Store
