@@ -3,11 +3,12 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
     java
+    application
     id("com.github.ben-manes.versions") version "0.52.0"
     id("checkstyle")
     id("org.sonarqube") version "6.2.0.5505"
     id("jacoco")
-    application
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 application {
