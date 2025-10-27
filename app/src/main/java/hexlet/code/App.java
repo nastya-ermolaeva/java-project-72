@@ -8,6 +8,10 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
+import gg.jte.ContentType;
+import gg.jte.TemplateEngine;
+import io.javalin.rendering.template.JavalinJte;
+import gg.jte.resolve.ResourceCodeResolver;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -31,6 +35,13 @@ public class App {
         }
     }
 
+    private static TemplateEngine createTemplateEngine() {
+        var classLoader = App.class.getClassLoader();
+        var codeResolver = new ResourceCodeResolver("templates", classLoader);
+        var templateEngine = TemplateEngine.create(codeResolver, ContentType.Html);
+        return templateEngine;
+    }
+
     public static Javalin getApp() throws IOException, SQLException {
         var hikariConfig = new HikariConfig();
         var databaseUrl = getDatabaseUrl();
@@ -48,6 +59,7 @@ public class App {
 
         var app = Javalin.create(config -> {
             config.bundledPlugins.enableDevLogging();
+            config.fileRenderer(new JavalinJte(createTemplateEngine()));
         });
 
         app.get("/", ctx -> ctx.result("Hello, World!"));
