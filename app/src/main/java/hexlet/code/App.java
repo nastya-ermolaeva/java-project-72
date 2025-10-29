@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import hexlet.code.repository.BaseRepository;
+import hexlet.code.util.NamedRoutes;
+import hexlet.code.controller.UrlsController;
 
 public class App {
     private static int getPort() {
@@ -62,7 +64,10 @@ public class App {
             config.fileRenderer(new JavalinJte(createTemplateEngine()));
         });
 
-        app.get("/", ctx -> ctx.result("Hello, World!"));
+        app.get(NamedRoutes.rootPath(), UrlsController::index);
+        app.post(NamedRoutes.urlsPath(), UrlsController::create);
+        app.get(NamedRoutes.urlsPath(), UrlsController::list);
+        app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
 
         return app;
     }
