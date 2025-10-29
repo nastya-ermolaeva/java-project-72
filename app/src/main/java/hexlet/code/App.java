@@ -49,6 +49,10 @@ public class App {
         var databaseUrl = getDatabaseUrl();
         hikariConfig.setJdbcUrl(databaseUrl);
 
+        if (databaseUrl.startsWith("jdbc:postgresql")) {
+            hikariConfig.setDriverClassName("org.postgresql.Driver");
+        }
+
         var dataSource = new HikariDataSource(hikariConfig);
         var sql = readResourceFile("schema.sql");
 
