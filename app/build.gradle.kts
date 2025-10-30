@@ -33,6 +33,8 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.6")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("io.javalin:javalin-testtools:6.6.0")
+    testImplementation("org.assertj:assertj-core:3.27.3")
 }
 
 checkstyle {
