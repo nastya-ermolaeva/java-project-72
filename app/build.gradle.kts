@@ -31,10 +31,13 @@ dependencies {
     implementation("com.h2database:h2:2.4.240")
     implementation("com.zaxxer:HikariCP:7.0.2")
     implementation("org.postgresql:postgresql:42.7.6")
+    implementation("org.jsoup:jsoup:1.21.2")
+    implementation("com.konghq:unirest-java:3.14.5")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("io.javalin:javalin-testtools:6.6.0")
     testImplementation("org.assertj:assertj-core:3.27.3")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
 }
 
 checkstyle {

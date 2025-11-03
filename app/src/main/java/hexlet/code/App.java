@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import hexlet.code.repository.BaseRepository;
 import hexlet.code.util.NamedRoutes;
 import hexlet.code.controller.UrlsController;
+import hexlet.code.controller.UrlChecksController;
 
 public class App {
     private static int getPort() {
@@ -72,6 +73,7 @@ public class App {
         app.post(NamedRoutes.urlsPath(), UrlsController::create);
         app.get(NamedRoutes.urlsPath(), UrlsController::list);
         app.get(NamedRoutes.urlPath("{id}"), UrlsController::show);
+        app.post(NamedRoutes.urlCheckPath("{id}"), UrlChecksController::check);
 
         return app;
     }

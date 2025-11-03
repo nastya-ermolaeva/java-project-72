@@ -5,6 +5,7 @@ app/.gradle
 build
 
 **/logs/
+**/jte-classes/
 
 .settings
 bin

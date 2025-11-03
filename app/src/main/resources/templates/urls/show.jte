@@ -1,11 +1,19 @@
 @import hexlet.code.dto.urls.UrlPage
 @import hexlet.code.model.Url
+@import hexlet.code.model.UrlCheck
 @import hexlet.code.util.NamedRoutes
 @import java.time.format.DateTimeFormatter
 @param UrlPage page
 
 @template.layout.page(
     content = @`
+        @if (page.getFlash() != null)
+            <div class="rounded-0 m-0 alert alert-${page.getFlashType()} alert-dismissible fade show" role="alert">
+                <p class="m-0">${page.getFlash()}</p>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
         <section>
             <div class="container-lg mt-5">
                 <h1>Сайт: ${page.getUrl().getName()}</h1>
@@ -28,7 +36,7 @@
                 </table>
 
                 <h2 class="mt-5">Проверки</h2>
-                <form method="post" action="/urls/${page.getUrl().getId()}/checks">
+                <form method="post" action="${NamedRoutes.urlCheckPath(page.getUrl().getId())}">
                     <button type="submit" class="btn btn-primary">Запустить проверку</button>
                 </form>
 
@@ -44,6 +52,16 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @for (UrlCheck check : page.getChecks())
+                            <tr>
+                                <td>${check.getId()}</td>
+                                <td>${check.getStatusCode()}</td>
+                                <td>${check.getTitle()}</td>
+                                <td>${check.getH1()}</td>
+                                <td>${check.getDescription()}</td>
+                                <td>${check.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yy HH:mm"))}</td>
+                            </tr>
+                        @endfor
                     </tbody>
                 </table>
             </div>

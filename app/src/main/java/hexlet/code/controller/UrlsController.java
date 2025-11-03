@@ -5,12 +5,16 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import java.sql.SQLException;
 import java.net.URI;
+import java.util.Map;
+import java.util.HashMap;
 
 import hexlet.code.dto.BasePage;
 import hexlet.code.dto.urls.UrlPage;
 import hexlet.code.dto.urls.UrlsPage;
 import hexlet.code.model.Url;
+import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.UrlRepository;
+import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.util.NamedRoutes;
 
 public class UrlsController {
@@ -53,7 +57,15 @@ public class UrlsController {
     // Страница со всеми сайтами (GET /urls)
     public static void list(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
-        var page = new UrlsPage(urls);
+        Map<Long, UrlCheck> lastChecks = new HashMap<>();
+
+        for (var url : urls) {
+            var lastCheck = UrlCheckRepository.findLastCheck(url.getId());
+            if (lastCheck.isPresent()) {
+                lastChecks.put(url.getId(), lastCheck.get());
+            }
+        }
+        var page = new UrlsPage(urls, lastChecks);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         page.setFlashType(ctx.consumeSessionAttribute("flashType"));
         ctx.render("urls/list.jte", model("page", page));
@@ -64,8 +76,10 @@ public class UrlsController {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var url = UrlRepository.findById(id)
                 .orElseThrow(() -> new NotFoundResponse("URL с id №" + id + " не найден"));
-
-        var page = new UrlPage(url);
+        var checks = UrlCheckRepository.getAllChecks(id);
+        var page = new UrlPage(url, checks);
+        page.setFlash(ctx.consumeSessionAttribute("flash"));
+        page.setFlashType(ctx.consumeSessionAttribute("flashType"));
         ctx.render("urls/show.jte", model("page", page));
     }
 
