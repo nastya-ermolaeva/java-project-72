@@ -18,7 +18,7 @@ import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.util.NamedRoutes;
 
 public class UrlsController {
-    // Главная страница с формой ввода (GET /)
+
     public static void index(Context ctx) {
         var page = new BasePage();
         page.setFlash(ctx.consumeSessionAttribute("flash"));
@@ -26,7 +26,6 @@ public class UrlsController {
         ctx.render("index.jte", model("page", page));
     }
 
-    // Добавляем новый URL (POST /urls)
     public static void create(Context ctx) throws SQLException {
         var rawUrl = ctx.formParam("url");
 
@@ -54,7 +53,6 @@ public class UrlsController {
         ctx.redirect(NamedRoutes.urlsPath());
     }
 
-    // Страница со всеми сайтами (GET /urls)
     public static void list(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
         Map<Long, UrlCheck> lastChecks = new HashMap<>();
@@ -71,7 +69,6 @@ public class UrlsController {
         ctx.render("urls/list.jte", model("page", page));
     }
 
-    // Страница конкретного сайта (GET /urls/{id})
     public static void show(Context ctx) throws SQLException {
         var id = ctx.pathParamAsClass("id", Long.class).get();
         var url = UrlRepository.findById(id)
@@ -82,7 +79,6 @@ public class UrlsController {
         page.setFlashType(ctx.consumeSessionAttribute("flashType"));
         ctx.render("urls/show.jte", model("page", page));
     }
-
 
     private static String normalizeUrl(String input) throws Exception {
         var uri = new URI(input);

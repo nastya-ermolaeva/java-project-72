@@ -7,6 +7,8 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=nastya-ermolaeva_java-project-72&metric=coverage)](https://sonarcloud.io/summary/new_code?id=nastya-ermolaeva_java-project-72)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=nastya-ermolaeva_java-project-72&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=nastya-ermolaeva_java-project-72)
 
-# My Javalin App
+# Description
+**Page Analyzer** is a website built with the Javalin framework that evaluates specified web pages for their SEO quality.
 
-[App](https://java-project-72-dere.onrender.com/)
+# Deploy on Render
+[Try The App Now](https://java-project-72-dere.onrender.com/)
