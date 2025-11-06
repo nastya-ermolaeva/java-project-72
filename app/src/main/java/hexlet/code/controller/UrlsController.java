@@ -5,14 +5,11 @@ import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
 import java.sql.SQLException;
 import java.net.URI;
-import java.util.Map;
-import java.util.HashMap;
 
 import hexlet.code.dto.BasePage;
 import hexlet.code.dto.urls.UrlPage;
 import hexlet.code.dto.urls.UrlsPage;
 import hexlet.code.model.Url;
-import hexlet.code.model.UrlCheck;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.repository.UrlCheckRepository;
 import hexlet.code.util.NamedRoutes;
@@ -55,14 +52,7 @@ public class UrlsController {
 
     public static void list(Context ctx) throws SQLException {
         var urls = UrlRepository.getEntities();
-        Map<Long, UrlCheck> lastChecks = new HashMap<>();
-
-        for (var url : urls) {
-            var lastCheck = UrlCheckRepository.findLastCheck(url.getId());
-            if (lastCheck.isPresent()) {
-                lastChecks.put(url.getId(), lastCheck.get());
-            }
-        }
+        var lastChecks = UrlCheckRepository.findLastChecks();
         var page = new UrlsPage(urls, lastChecks);
         page.setFlash(ctx.consumeSessionAttribute("flash"));
         page.setFlashType(ctx.consumeSessionAttribute("flashType"));

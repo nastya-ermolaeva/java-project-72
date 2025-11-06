@@ -6,7 +6,8 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
+import java.util.HashMap;
 import java.sql.ResultSet;
 
 import hexlet.code.model.UrlCheck;
@@ -60,19 +61,25 @@ public class UrlCheckRepository extends BaseRepository {
         }
     }
 
-    public static Optional<UrlCheck> findLastCheck(Long urlId) throws SQLException {
-        var sql = "SELECT * FROM url_checks WHERE url_id = ? ORDER BY created_at DESC LIMIT 1";
+    public static Map<Long, UrlCheck> findLastChecks() throws SQLException {
+        var sql = """
+            SELECT DISTINCT ON (url_id) *
+            FROM url_checks
+            ORDER BY url_id, created_at DESC
+            """;
+
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
 
-            stmt.setLong(1, urlId);
             var resultSet = stmt.executeQuery();
+            var result = new HashMap<Long, UrlCheck>();
 
-            if (resultSet.next()) {
-                return Optional.of(generateUrlCheck(resultSet));
+            while (resultSet.next()) {
+                var check = generateUrlCheck(resultSet);
+                result.put(check.getUrlId(), check);
             }
 
-            return Optional.empty();
+            return result;
         }
     }
 
